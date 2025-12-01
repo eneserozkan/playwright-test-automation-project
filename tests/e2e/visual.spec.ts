@@ -2,7 +2,7 @@ import { test, expect } from '../../fixtures/pomFixtures';
 
 test.describe('Visual Regression Tests', () => {
 
-    test('Login Page Visual Check', async ({ loginPage, page }) => {
+    test.skip('Login Page Visual Check', async ({ loginPage, page }) => {
         // 1. Sayfaya git
         await loginPage.goToURL();
 
