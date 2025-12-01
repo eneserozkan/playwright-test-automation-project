@@ -3,21 +3,26 @@ import { test, expect } from '@playwright/test';
 test.describe('User Management API Service', () => {
 
     test('POST - Create User and Verify Response', async ({ request }) => {
+        const url = 'https://jsonplaceholder.typicode.com/posts';
+        
         const payload = {
-            name: "Samual",
-            job: "QA Engineer"
+            title: "Playwright Automation",
+            body: "Testing CI/CD Pipeline",
+            userId: 1
         };
 
-        const response = await request.post('https://reqres.in/api/users', {
+        const response = await request.post(url, {
             data: payload,
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
         });
 
         expect(response.status()).toBe(201);
         
         const responseBody = await response.json();
-        expect(responseBody.name).toBe(payload.name);
-        expect(responseBody.job).toBe(payload.job);
+        console.log('API Cevabı:', responseBody);
+
+        expect(responseBody.title).toBe(payload.title);
+        expect(responseBody.body).toBe(payload.body);
         expect(responseBody.id).toBeDefined();
     });
 
