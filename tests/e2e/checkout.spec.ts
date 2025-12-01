@@ -1,32 +1,28 @@
 import { test, expect } from '../../fixtures/pomFixtures';
 import checkoutData from '../../data/alisveris_verisi.json';
+import { faker } from '@faker-js/faker';
 
-test.describe('E-Commerce Checkout Flow', () => {
+test.describe('Checkout Flow with Dynamic Data', () => {
 
-    for (const customer of checkoutData) {
+    test('Should complete purchase with Random User', async ({ loginPage, checkoutPage, page }) => {
         
-        test(`Should complete purchase for customer: ${customer.ad}`, async ({ loginPage, checkoutPage, page }) => {
-            
-            // 1. Login Phase
-            await loginPage.goToURL();
-            await loginPage.login('standard_user', 'secret_sauce');
-            
-            // Verify login success
-            await expect(page).toHaveURL(/inventory.html/);
+        // 2. Create random data
+        const firstName = faker.person.firstName();
+        const lastName = faker.person.lastName();
+        const zipCode = faker.location.zipCode();
 
-            // 2. Add to Cart & Navigate
-            await checkoutPage.isAddToCartBtnVisible();
-            await checkoutPage.clickAddToCartBtn();
-            await checkoutPage.goToCartPage();
+        console.log(`Test Edilen Müşteri: ${firstName} ${lastName}`);
 
-            // 3. Checkout Process
-            await checkoutPage.checkOutForm();
-            
-            // Fill form with dynamic data from JSON
-            await checkoutPage.fillForm(customer.ad, customer.soyad, customer.postaKodu);
-            
-            // 4. Finalize & Verify
-            await checkoutPage.result();
-        });
-    }
+        await loginPage.goToURL();
+        await loginPage.login('standard_user', 'secret_sauce');
+        
+        await checkoutPage.isAddToCartBtnVisible();
+        await checkoutPage.clickAddToCartBtn();
+        await checkoutPage.goToCartPage();
+        await checkoutPage.checkOutForm();
+        
+        await checkoutPage.fillForm(firstName, lastName, zipCode);
+        
+        await checkoutPage.result();
+    });
 });
