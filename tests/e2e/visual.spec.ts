@@ -2,18 +2,16 @@ import { test, expect } from '../../fixtures/pomFixtures';
 
 test.describe('Visual Regression Tests', () => {
 
-    test.skip('Login Page Visual Check', async ({ loginPage, page }) => {
-        // 1. Sayfaya git
+    test('Login Page Visual Check', async ({ loginPage, page }) => {
+        // 1. Go to the page
         await loginPage.goToURL();
 
-        // 2. Sayfanın tamamen yüklendiğinden emin ol (Gerekirse)
+        // 2. Check title
         await expect(page).toHaveTitle(/Swag Labs/);
 
-        // 3. FOTOĞRAFI ÇEK VE KARŞILAŞTIR 📸
-        // İlk çalışmada: Referans fotoğrafı çeker ve kaydeder.
-        // Sonraki çalışmalarda: Yeni çektiğiyle eskisini piksel piksel kıyaslar.
+        // 3. Take snapshot
         await expect(page).toHaveScreenshot('login-page-snapshot.png', {
-            maxDiffPixels: 100, // 100 piksele kadar olan farkları görmezden gel (Opsiyonel tolerans)
+            maxDiffPixels: 100, 
         });
     });
 });
